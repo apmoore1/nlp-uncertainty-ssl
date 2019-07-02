@@ -3,8 +3,7 @@ from typing import Dict, Optional, List, Any
 from allennlp.common.checks import check_dimensions_match, ConfigurationError
 from allennlp.data import Vocabulary
 from allennlp.modules import Seq2SeqEncoder, TimeDistributed, TextFieldEmbedder
-from allennlp.modules import ConditionalRandomField, FeedForward
-from allennlp.modules.conditional_random_field import allowed_transitions
+from allennlp.modules import FeedForward
 from allennlp.modules.input_variational_dropout import InputVariationalDropout
 from allennlp.models.model import Model
 from allennlp.modules.token_embedders import Embedding
