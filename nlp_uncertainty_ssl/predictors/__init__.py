@@ -1,0 +1,1 @@
+from nlp_uncertainty_ssl.predictors.cvt_tagger import CvtTaggerPredictor

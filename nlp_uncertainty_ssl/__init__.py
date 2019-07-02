@@ -1,1 +1,2 @@
 from nlp_uncertainty_ssl import models
+from nlp_uncertainty_ssl import predictors
