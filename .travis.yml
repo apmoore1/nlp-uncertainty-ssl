@@ -1,0 +1,17 @@
+os: linux
+dist: xenial
+
+language: python
+
+python:
+  - "3.6"
+
+install:
+  - pip install -U pip
+  - travis_wait pip install --progress-bar off -r requirements.txt
+
+script:
+  - travis_wait python -m pytest --cov=./nlp_uncertainty_ssl
+
+after_success:
+  - codecov
