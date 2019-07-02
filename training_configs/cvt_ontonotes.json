@@ -1,0 +1,74 @@
+{
+    "dataset_reader": {
+      "type": "ontonotes_ner",
+      "coding_scheme": "BIO",
+      "token_indexers": {
+        "tokens": {
+          "type": "single_id",
+          "lowercase_tokens": true
+        },
+        "token_characters": {
+          "type": "characters",
+          "min_padding_length": 1
+        }
+      }
+    },
+    "train_data_path": "../conll-formatted-ontonotes-5.0-12/conll-formatted-ontonotes-5.0/conll-2012/v4/data/train",
+    "validation_data_path": "../conll-formatted-ontonotes-5.0-12/conll-formatted-ontonotes-5.0/conll-2012/v4/data/development",
+    "test_data_path": "../conll-formatted-ontonotes-5.0-12/conll-formatted-ontonotes-5.0/conll-2012/v4/data/test",
+    "evaluate_on_test": true,
+    "model": {
+      "type": "cvt_tagger",
+      "label_encoding": "BIO",
+      "calculate_span_f1" : true,
+      "verbose_metrics": true,
+      "droput": 0.5,
+      "text_field_embedder": {
+        "token_embedders": {
+          "tokens": {
+            "type": "embedding",
+            "embedding_dim": 300,
+            "trainable": false,
+            "pretrained_file": "../../Documents/Glove Vectors/glove.840B.300d.txt"
+          },
+          "token_characters": {
+            "type": "character_encoding",
+            "embedding": {
+              "embedding_dim": 30
+            },
+            "encoder": {
+              "type": "lstm",
+              "input_size": 30,
+              "hidden_size": 30,
+              "num_layers": 1,
+              "bidirectional": true
+            }
+          }
+        }
+      },
+      "encoder": {
+        "type": "lstm",
+        "input_size": 360,
+        "hidden_size": 300,
+        "num_layers": 2,
+        "dropout": 0.5,
+        "bidirectional": true
+      },
+      "feedforward": {
+        "input_dim": 300,
+        "num_layers": 1,
+        "hidden_dims": 50,
+        "activations": ["relu"],
+        "dropout": 0.5
+      }
+    },
+    "iterator": {"type": "basic", "batch_size": 32},
+    "trainer": {
+      "optimizer": "adam",
+      "num_epochs": 150,
+      "grad_norm": 5.0,
+      "patience": 10,
+      "validation_metric": "+f1-measure-overall",
+      "cuda_device": 0
+    }
+  }
