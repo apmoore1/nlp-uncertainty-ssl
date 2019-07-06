@@ -92,7 +92,11 @@ if __name__ == '__main__':
         data_path: Path
         json_data_fp = data_path.with_name(f'{name}.json')
         with json_data_fp.open('w+') as json_data_file:
-            json.dump(json_data, json_data_file)
+            for index, sample in enumerate(json_data):
+                sample = json.dumps(sample)
+                if index != 0:
+                    sample = f'\n{sample}'
+                json_data_file.write(sample)
         # Get general data stats from the data
         stats = sorted(simple_stats(json_data).items(), key=lambda x: x[0])
         overall_data_stats[name] = dict(stats)

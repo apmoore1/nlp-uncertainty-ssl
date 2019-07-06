@@ -25,7 +25,8 @@ if __name__ == '__main__':
     json_data = []
     for json_fp in json_fps:
         with json_fp.open('r') as json_file:
-            json_data.extend(json.load(json_file))
+            for line in json_file:
+                json_data.append(json.loads(line))
     number_samples = len(json_data)
     data_stats = simple_stats(json_data)
     if args.normalise_by_sample_count:
@@ -33,5 +34,3 @@ if __name__ == '__main__':
                       for name, stat in data_stats.items()}
     data_stats = dict(sorted(data_stats.items(), key=lambda x: x[0]))
     print(data_stats)
-    import pdb
-    pdb.set_trace()

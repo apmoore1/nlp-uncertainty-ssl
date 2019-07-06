@@ -18,15 +18,10 @@ We then process the following files by tokenising them before processing them an
 ``` bash
 python tokenize_to_json.py ../english_emotion_dataset/train.txt ../english_emotion_dataset/development.txt ../english_emotion_dataset/test.txt ./results/tables/original_english_emotion_dataset_stats.tex
 ```
-Example of this JSON format is below:
+Example of this JSON format is below where each JSON sample is on a new line:
 ``` json
-[{"ID": "2017-En-21441", 
-  "text": "\u201cWorry is a down payment on a problem you may never have'. \u00a0Joyce Meyer.  #motivation #leadership #worry", 
-  "tokens": ["\u201c", "Worry", "is", "a", "down", "payment", "on", "a", "problem", "you", "may", "never", "have", "'", ".", "Joyce", "Meyer", ".", "#", "motivation", "#", "leadership", "#", "worry"], 
-  "labels": ["anticipation", "optimism", "trust"]},
- {"ID": "2017-En-31535", 
-  "text": "Whatever you decide to do make sure it makes you #happy.", "tokens": ["Whatever", "you", "decide", "to", "do", "make", "sure", "it", "makes", "you", "#", "happy", "."], 
-  "labels": ["joy", "love", "optimism"]}]
+{"ID": "2017-En-21441", "text": "\u201cWorry is a down payment on a problem you may never have'. \u00a0Joyce Meyer.  #motivation #leadership #worry", "tokens": ["\u201c", "Worry", "is", "a", "down", "payment", "on", "a", "problem", "you", "may", "never", "have", "'", ".", "Joyce", "Meyer", ".", "#", "motivation", "#", "leadership", "#", "worry"], "labels": ["anticipation", "optimism", "trust"]}
+{"ID": "2017-En-31535", "text": "Whatever you decide to do make sure it makes you #happy.", "tokens": ["Whatever", "you", "decide", "to", "do", "make", "sure", "it", "makes", "you", "#", "happy", "."], "labels": ["joy", "love", "optimism"]}
 ```
 
 ### Checking the JSON data has the same statistics breakdown
@@ -35,7 +30,7 @@ To check that when converting the data into json that none of the data has been 
 python json_stats.py --normalise_by_sample_count ../english_emotion_dataset/train.json ../english_emotion_dataset/development.json ../english_emotion_dataset/test.json
 ```
 Output:
-``` json
+``` python
 {'anger': '36.1', 'anticipation': '13.9', 'disgust': '36.6', 'fear': '16.8', 'joy': '39.3', 'love': '12.3', 'neutral': '2.7', 'optimism': '31.3', 'pessimism': '11.6', 'sadness': '29.4', 'surprise': '5.2', 'trust': '5.0'}
 ```
 Which should be the same as `./results/tables/original_english_emotion_dataset_stats.tex` and [table 2 in the original paper](http://saifmohammad.com/WebDocs/semeval2018-task1.pdf).
@@ -45,7 +40,7 @@ As a side note this script can work with any number of json files e.g. if you on
 python json_stats.py --normalise_by_sample_count ../english_emotion_dataset/train.json
 ```
 Output:
-``` json
+``` python
 {'anger': '37.2', 'anticipation': '14.3', 'disgust': '38.1', 'fear': '18.2', 'joy': '36.2', 'love': '10.2', 'neutral': '3.0', 'optimism': '29.0', 'pessimism': '11.6', 'sadness': '29.4', 'surprise': '5.3', 'trust': '5.2'}
 ```
 
