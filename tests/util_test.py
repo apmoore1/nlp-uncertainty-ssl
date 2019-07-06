@@ -3,6 +3,7 @@ from typing import List
 import pytest
 
 from nlp_uncertainty_ssl.util import tweet_tokenizer, is_character_preserving
+from nlp_uncertainty_ssl.util import simple_stats
 
 def test_tweet_tokenizer():
     non_hashtag = ' This is some text '
@@ -39,3 +40,26 @@ def test_is_character_preserving():
 
     tokens = not_char_preserving_tokenizer(sentence)
     assert not is_character_preserving(sentence, tokens)
+
+def test_simple_stats():
+    # Empty case
+    samples = []
+    stats_answer = {}
+    assert stats_answer == simple_stats(samples)
+
+    # Case that contains only non empty lists
+    samples = [{'labels': ['joy', 'anger', 'happy']},
+               {'labels': ['joy', 'fun']}]
+    stats_answer = {'joy': 2, 'anger': 1, 'happy': 1, 'fun': 1}
+    stats = simple_stats(samples)
+    for key, value in stats_answer.items():
+        assert value == stats[key]
+    
+    # Case that contais empty lists as well
+    samples.extend([{'labels': []}])
+    print(samples)
+    stats_answer['neutral'] = 1
+    stats = simple_stats(samples)
+    for key, value in stats_answer.items():
+        assert value == stats[key]
+    

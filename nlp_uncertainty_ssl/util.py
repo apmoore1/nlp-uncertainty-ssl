@@ -1,5 +1,6 @@
 import copy
-from typing import List
+from collections import Counter
+from typing import List, Dict, Any
 import re
 
 import twokenize
@@ -43,7 +44,6 @@ def tweet_tokenizer(text: str) -> List[str]:
     hashtag_pattern = re.compile('^#.+')
     if isinstance(text, str):
         tokenized_text = twokenize.tokenizeRawTweetText(text)
-        print(tokenized_text)
         hashtag_tokenized_text = []
         for token in tokenized_text:
             if hashtag_pattern.search(token):
@@ -64,3 +64,20 @@ def tweet_tokenizer(text: str) -> List[str]:
         return hashtag_tokenized_text
 
     raise ValueError(f'The paramter must be of type str not {type(text)}')
+
+def simple_stats(data: List[Dict[str, Any]]) -> Dict[str, int]:
+    '''
+    :param data: A list of dictionaries where each dictionary represents 
+                 a sample and contains at least the following key and value; 
+                 `labels` with a List of Strings as values e.g. 
+                 [`anger`, `joy`], Note the list can be empty.
+    :returns: A dictionary where each key is label and the value is the 
+              number of times that label appears in the dataset.
+    '''
+    stats = Counter()
+    for sample in data:
+        labels = sample['labels']
+        if not labels:
+            labels = ['neutral']
+        stats.update(labels)
+    return dict(stats)
