@@ -1,0 +1,209 @@
+ALL 2 LAYERS
+200 LSTM
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2484.504,
+  "peak_gpu_0_memory_MB": 1487,
+  "training_duration": "0:01:04.573225",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6432676638950401,
+  "training_loss": 0.23554675120895155,
+  "training_cpu_memory_MB": 2484.5,
+  "training_gpu_0_memory_MB": 1483,
+  "validation_jaccard_index": 0.5300413844996239,
+  "validation_loss": 0.35527568416936056,
+  "best_validation_jaccard_index": 0.5268166182951737,
+  "best_validation_loss": 0.34167360195091795,
+  "test_jaccard_index": 0.5310349362205761,
+  "test_loss": 0.33183742080833395
+}
+300 LSTM
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2487.68,
+  "peak_gpu_0_memory_MB": 1540,
+  "training_duration": "0:01:13.130924",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6562960486914858,
+  "training_loss": 0.22609631905210353,
+  "training_cpu_memory_MB": 2487.676,
+  "training_gpu_0_memory_MB": 1532,
+  "validation_jaccard_index": 0.5425696012039127,
+  "validation_loss": 0.3551488566611494,
+  "best_validation_jaccard_index": 0.530530474040632,
+  "best_validation_loss": 0.3358277284673282,
+  "test_jaccard_index": 0.5214424524028695,
+  "test_loss": 0.3277692398896404
+}
+GRU 300
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2484.06,
+  "peak_gpu_0_memory_MB": 1527,
+  "training_duration": "0:01:05.481630",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6879444699786907,
+  "training_loss": 0.20547304775948835,
+  "training_cpu_memory_MB": 2484.06,
+  "training_gpu_0_memory_MB": 1522,
+  "validation_jaccard_index": 0.5410835214446952,
+  "validation_loss": 0.3683256081172398,
+  "best_validation_jaccard_index": 0.5518999247554551,
+  "best_validation_loss": 0.3261112996510097,
+  "test_jaccard_index": 0.5410317947369189,
+  "test_loss": 0.32481518636147183
+}
+
+1 LAYERS
+300 GRU
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2480.172,
+  "peak_gpu_0_memory_MB": 1484,
+  "training_duration": "0:00:46.314498",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.7048419894427497,
+  "training_loss": 0.19297201325681723,
+  "training_cpu_memory_MB": 2480.164,
+  "training_gpu_0_memory_MB": 1481,
+  "validation_jaccard_index": 0.5278028592927012,
+  "validation_loss": 0.3745522467153413,
+  "best_validation_jaccard_index": 0.5484762979683974,
+  "best_validation_loss": 0.3289877713790962,
+  "test_jaccard_index": 0.544907874165315,
+  "test_loss": 0.32485761245091754
+}
+1 LAYER forward only
+300 GRU
+allennlp.common.util - Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2478.736,
+  "peak_gpu_0_memory_MB": 1482,
+  "training_duration": "0:00:41.494767",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6733140433710774,
+  "training_loss": 0.2152764951792833,
+  "training_cpu_memory_MB": 2478.728,
+  "training_gpu_0_memory_MB": 1473,
+  "validation_jaccard_index": 0.5222455122003654,
+  "validation_loss": 0.36329897067376543,
+  "best_validation_jaccard_index": 0.5430586907449209,
+  "best_validation_loss": 0.3273805981235845,
+  "test_jaccard_index": 0.5409159981881676,
+  "test_loss": 0.3226928745999056
+}
+2 LAYER forward only
+300 GRU
+allennlp.common.util - Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2479.832,
+  "peak_gpu_0_memory_MB": 1531,
+  "training_duration": "0:00:47.628115",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6625483990027716,
+  "training_loss": 0.22604157671193095,
+  "training_cpu_memory_MB": 2479.824,
+  "training_gpu_0_memory_MB": 1524,
+  "validation_jaccard_index": 0.537829194883371,
+  "validation_loss": 0.3599662317761353,
+  "best_validation_jaccard_index": 0.5480732021928411,
+  "best_validation_loss": 0.32866012837205616,
+  "test_jaccard_index": 0.5431785969987873,
+  "test_loss": 0.3241533157872219
+}
+
+
+THIS IS USING THE GLOVE TWITTER
+2 LAYER
+300 GRU
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2473.076,
+  "peak_gpu_0_memory_MB": 1570,
+  "training_duration": "0:01:04.961225",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6460002924831826,
+  "training_loss": 0.2332153458183057,
+  "training_cpu_memory_MB": 2473.072,
+  "training_gpu_0_memory_MB": 1568,
+  "validation_jaccard_index": 0.54849510910459,
+  "validation_loss": 0.3468791464609759,
+  "best_validation_jaccard_index": 0.5547027840481564,
+  "best_validation_loss": 0.31620986653225763,
+  "test_jaccard_index": 0.5481925510308446,
+  "test_loss": 0.31518909539662154
+}
+200 GRU
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2469.676,
+  "peak_gpu_0_memory_MB": 1491,
+  "training_duration": "0:01:02.580311",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6369456747308456,
+  "training_loss": 0.24042113933050743,
+  "training_cpu_memory_MB": 2469.672,
+  "training_gpu_0_memory_MB": 1488,
+  "validation_jaccard_index": 0.5489653875094054,
+  "validation_loss": 0.34471804914729937,
+  "best_validation_jaccard_index": 0.5558878856282918,
+  "best_validation_loss": 0.32153600241456715,
+  "test_jaccard_index": 0.5518439778488873,
+  "test_loss": 0.3170465562565654
+}
+200 GRU with Char CNN
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2494.396,
+  "peak_gpu_0_memory_MB": 1595,
+  "training_duration": "0:01:25.121855",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6378964191701835,
+  "training_loss": 0.24131545521945597,
+  "training_cpu_memory_MB": 2494.372,
+  "training_gpu_0_memory_MB": 1595,
+  "validation_jaccard_index": 0.5598946576373212,
+  "validation_loss": 0.34155626382146564,
+  "best_validation_jaccard_index": 0.5555116629044394,
+  "best_validation_loss": 0.31782368783439907,
+  "test_jaccard_index": 0.5538998232002219,
+  "test_loss": 0.3141564970799521
+}
+200 GRU with Char LSTM
+Metrics: {
+  "best_epoch": 3,
+  "peak_cpu_memory_MB": 2490.912,
+  "peak_gpu_0_memory_MB": 1485,
+  "training_duration": "0:01:31.616957",
+  "training_start_epoch": 0,
+  "training_epochs": 7,
+  "epoch": 7,
+  "training_jaccard_index": 0.6399988741718778,
+  "training_loss": 0.23925760813127053,
+  "training_cpu_memory_MB": 2490.9,
+  "training_gpu_0_memory_MB": 1485,
+  "validation_jaccard_index": 0.5549473288186606,
+  "validation_loss": 0.33790403444852146,
+  "best_validation_jaccard_index": 0.5483177469633451,
+  "best_validation_loss": 0.3146341597395284,
+  "test_jaccard_index": 0.5582343400692586,
+  "test_loss": 0.3149738561581163
+}

@@ -1,1 +1,2 @@
 from nlp_uncertainty_ssl.models.cvt_tagger import CvtTagger
+from nlp_uncertainty_ssl.models.emotion_classifier import EmotionClassifier

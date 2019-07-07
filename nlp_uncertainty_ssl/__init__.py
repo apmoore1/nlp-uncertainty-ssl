@@ -1,4 +1,6 @@
 from nlp_uncertainty_ssl import dataset_readers
 from nlp_uncertainty_ssl import models
 from nlp_uncertainty_ssl import predictors
+from nlp_uncertainty_ssl import metrics
 from nlp_uncertainty_ssl import util
+from nlp_uncertainty_ssl import emotion_metrics

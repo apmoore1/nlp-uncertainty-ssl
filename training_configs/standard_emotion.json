@@ -1,0 +1,46 @@
+{
+    "dataset_reader": {
+      "type": "emotion",
+      "token_indexers": {
+        "tokens": {
+          "type": "single_id",
+          "lowercase_tokens": true
+        }
+      }
+    },
+    "train_data_path": "../english_emotion_dataset/train.json",
+    "validation_data_path": "../english_emotion_dataset/development.json",
+    "test_data_path": "../english_emotion_dataset/test.json",
+    "evaluate_on_test": true,
+    "model": {
+      "type": "emotion_classifier",
+      "text_field_embedder": {
+        "token_embedders": {
+            "tokens": {
+                "type": "embedding",
+                "embedding_dim": 200,
+                "trainable": true,
+                "pretrained_file": "../../Videos/glove.twitter.27B.200d.txt"
+              }
+        }
+      },
+      "incl_neutral": true,
+      "dropout": 0.5,
+      "encoder": {
+        "type": "gru",
+        "input_size": 200,
+        "hidden_size": 200,
+        "dropout": 0.5,
+        "num_layers": 2,
+        "bidirectional": true
+      }
+    },
+    "iterator": {"type": "basic", "batch_size": 32},
+    "trainer": {
+      "optimizer": "adam",
+      "num_epochs": 100,
+      "patience": 5,
+      "validation_metric": "-loss",
+      "cuda_device": 0
+    }
+  }
