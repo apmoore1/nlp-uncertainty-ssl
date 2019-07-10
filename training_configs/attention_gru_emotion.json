@@ -8,7 +8,7 @@
         },
         "token_characters": {
           "type": "characters",
-          "min_padding_length": 3
+          "min_padding_length": 1
         }
       }
     },
@@ -44,7 +44,7 @@
       },
       "incl_neutral": true,
       "dropout": 0.5,
-      "encoder": {
+      "seq_encoder": {
         "type": "gru",
         "input_size": 250,
         "hidden_size": 200,

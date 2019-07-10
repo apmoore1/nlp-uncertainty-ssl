@@ -2,9 +2,10 @@ from typing import Dict, Optional, List, Any
 
 from allennlp.common.checks import check_dimensions_match, ConfigurationError
 from allennlp.data import Vocabulary
-from allennlp.modules import Seq2VecEncoder, TimeDistributed, TextFieldEmbedder
+from allennlp.modules import Seq2VecEncoder, TimeDistributed, TextFieldEmbedder, Seq2SeqEncoder
 from allennlp.modules import FeedForward
 from allennlp.modules.input_variational_dropout import InputVariationalDropout
+from allennlp.modules.attention import DotProductAttention
 from allennlp.models.model import Model
 from allennlp.modules.token_embedders import Embedding
 from allennlp.nn import InitializerApplicator, RegularizerApplicator
@@ -14,6 +15,7 @@ from overrides import overrides
 import torch
 from torch.nn.modules.linear import Linear
 import torch.nn.functional as F
+from torch.nn.parameter import Parameter
 
 from nlp_uncertainty_ssl.metrics.jaccard_index import JaccardIndex
 
@@ -62,6 +64,7 @@ class EmotionClassifier(Model):
                  text_field_embedder: TextFieldEmbedder,
                  label_namespace: str = "labels",
                  encoder: Optional[Seq2VecEncoder] = None,
+                 seq_encoder: Optional[Seq2SeqEncoder] = None,
                  feedforward: Optional[FeedForward] = None,
                  dropout: Optional[float] = None,
                  incl_neutral: Optional[bool] = False,
@@ -73,6 +76,11 @@ class EmotionClassifier(Model):
         self.num_labels = self.vocab.get_vocab_size(label_namespace)
         self.encoder = encoder
 
+        self.seq_encoder = seq_encoder
+        if self.seq_encoder is not None:
+            self.attention_vector = Parameter(torch.Tensor(self.seq_encoder.get_output_dim()))
+            self.attention_layer = DotProductAttention(normalize=True)
+    
         embedding_output_dim = self.text_field_embedder.get_output_dim()
         
         if dropout is not None:
@@ -86,6 +94,8 @@ class EmotionClassifier(Model):
             output_dim = feedforward.get_output_dim()
         elif encoder is not None:
             output_dim = self.encoder.get_output_dim()
+        elif seq_encoder is not None:
+            output_dim = self.seq_encoder.get_output_dim()
         else:
             output_dim = embedding_output_dim
         # Have to create a tag projection layer for each label in the 
@@ -109,7 +119,15 @@ class EmotionClassifier(Model):
         elif feedforward is not None and encoder is None:
             check_dimensions_match(embedding_output_dim, feedforward.get_input_dim(),
                                    "text field output dim", "feedforward input dim")
+        if self.seq_encoder is not None:
+            self.reset_parameters()
         initializer(self)
+
+    def reset_parameters(self):
+        '''
+        Intitalises the attnention vector
+        '''
+        torch.nn.init.uniform_(self.attention_vector, -0.01, 0.01)
 
     @overrides
     def forward(self,  # type: ignore
@@ -168,8 +186,22 @@ class EmotionClassifier(Model):
         mask = util.get_text_field_mask(tokens)
         encoded_text = embedded_text_input
 
+        batch_size = embedded_text_input.shape[0]
+
         if self.dropout is not None:
             encoded_text = self.variational_dropout(encoded_text)
+
+        if self.seq_encoder is not None:
+            encoded_text = self.seq_encoder(encoded_text, mask)
+            encoded_text = self.variational_dropout(encoded_text)
+            attention_vector = self.attention_vector.unsqueeze(0).expand(batch_size, -1)
+            attention_weights = self.attention_layer(attention_vector, 
+                                                     encoded_text, 
+                                                     mask)
+            attention_weights = attention_weights.unsqueeze(-1)
+            weighted_encoded_text_seq = encoded_text * attention_weights
+            weighted_encoded_text_vec = weighted_encoded_text_seq.sum(1)
+            encoded_text = self.dropout(weighted_encoded_text_vec)
         
         if self.encoder is not None: 
             encoded_text = self.encoder(encoded_text, mask)
@@ -181,7 +213,6 @@ class EmotionClassifier(Model):
         if self._feedforward is not None:
             encoded_text = self._feedforward(encoded_text)
 
-        batch_size = embedded_text_input.shape[0]
         all_label_logits = torch.empty(batch_size, self.num_labels)
         for i in range(len(self._tag_projection_layers)):
             tag_projection = getattr(self, f'tag_projection_layer_{i}')

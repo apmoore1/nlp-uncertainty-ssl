@@ -34,3 +34,4 @@ if __name__ == '__main__':
                       for name, stat in data_stats.items()}
     data_stats = dict(sorted(data_stats.items(), key=lambda x: x[0]))
     print(data_stats)
+    print(f'Dataset size: {number_samples}')

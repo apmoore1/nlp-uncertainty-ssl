@@ -8,7 +8,7 @@
         },
         "token_characters": {
           "type": "characters",
-          "min_padding_length": 3
+          "min_padding_length": 1
         }
       }
     },

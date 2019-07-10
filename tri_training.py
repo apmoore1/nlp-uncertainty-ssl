@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("train_fp", type=parse_path,
-                        help="File path to the training dataset")
+                        help='File path to the model config file')
     parser.add_argument("dev_fp", type=parse_path,
                         help="File path to the development dataset")
     parser.add_argument("test_fp", type=parse_path,
@@ -107,7 +107,7 @@ if __name__ == '__main__':
                         help='Unlabelled dataset')
     parser.add_argument("save_dir", type=parse_path, help='Save directory')
     parser.add_argument("model_fps", type=parse_path, nargs='+',
-                        help='File path to the model config file(s)')
+                        help="File path to the training dataset(s)")
     args = parser.parse_args()
     train_fp = args.train_fp
     dev_fp = args.dev_fp
@@ -117,10 +117,14 @@ if __name__ == '__main__':
     args.save_dir.mkdir(parents=True, exist_ok=True)
     save_dev_results_fp = Path(args.save_dir, 'dev.json').resolve()
     save_test_results_fp = Path(args.save_dir, 'test.json').resolve()
+    total_patience = 0
+    
 
     best_dev_scores = []
     best_test_scores = []
+    number_times_repeated = []
     for i in range(5):
+        patience = 0
         print(best_dev_scores)
         print(best_test_scores)
         # Make sure the unlabelled data has no labels
@@ -141,8 +145,9 @@ if __name__ == '__main__':
             majority_better = True
             best_dev_score = 0
             best_test_score = 0
+            number_times = 0
             while majority_better:
-                model_names = []
+                number_times += 1
                 model_dev_preds = []
                 model_test_preds = []
                 model_unlabelled_predictions = []
@@ -150,8 +155,6 @@ if __name__ == '__main__':
                 model_vocab = None
                 # Train each model
                 for model_index, model_fp in enumerate(model_fps):
-                    model_name = model_fp.stem
-                    model_names.append(model_name)
                     # Get model specific train fp
                     model_train_fp = Path(temp_dir, 'temp_train_file.json').resolve()
                     data_to_file(train_datas[model_index], model_train_fp)
@@ -187,6 +190,14 @@ if __name__ == '__main__':
                 if best_dev_score < dev_score:
                     best_dev_score = dev_score
                     best_test_score = test_score
+                    patience = 0
+                elif patience != total_patience:
+                    patience += 1
+                elif number_times == 10:
+                    best_dev_scores.append(best_dev_score)
+                    best_test_scores.append(best_test_score)
+                    majority_better = False
+                    break
                 else:
                     best_dev_scores.append(best_dev_score)
                     best_test_scores.append(best_test_score)
@@ -214,18 +225,25 @@ if __name__ == '__main__':
                         sample_1_pred = sorted(index_array_to_labels(sample_1_pred, index_label_1))
                         sample_2_pred = model_unlabelled_predictions_2[i]['prediction']
                         sample_2_pred = sorted(index_array_to_labels(sample_2_pred, index_label_2))
-                        if sample_1_pred == sample_2_pred:
-                            sample_add_pred = sorted(index_array_to_labels(sample_add['prediction'], index_label_add))
-                            if sample_1_pred != sample_add_pred:
-                                sample_add['labels'] = sample_add_pred
-                                model_train_data_add.append(sample_add)
+
+                        sample_add_pred = sorted(index_array_to_labels(sample_add['prediction'], index_label_add))
+                        if sample_1_pred == sample_2_pred and sample_1_pred == sample_add_pred:
+                            sample_add['labels'] = sample_add_pred
+                            model_train_data_add.append(sample_add)
+                            #sample_add_pred = sorted(index_array_to_labels(sample_add['prediction'], index_label_add))
+                            #if sample_1_pred != sample_add_pred:
+                            #    sample_add['labels'] = sample_add_pred
+                            #    model_train_data_add.append(sample_add)
+            number_times_repeated.append(number_times)
+            print(number_times_repeated)
     
     dev_scores = statistics.mean(best_dev_scores)
-    dev_scores = {'jaccard_index': dev_scores}
+    dev_scores = {'jaccard_index': best_dev_scores}
     test_scores = statistics.mean(best_test_scores)
-    test_scores = {'jaccard_index': test_scores}
+    test_scores = {'jaccard_index': best_test_scores}
     print(dev_scores)
     print(test_scores)
+    print(number_times_repeated)
     with save_dev_results_fp.open('w+') as dev_results_file:
         json.dump(dev_scores, dev_results_file)
     with save_test_results_fp.open('w+') as test_results_file:

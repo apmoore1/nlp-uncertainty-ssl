@@ -5,10 +5,10 @@ import tempfile
 
 from allennlp.commands import main
 
-config_file = "./training_configs/test_predictor_config.json"
+config_file = "./training_configs/gru_emotion.json"
 
 # Use overrides to train on CPU.
-overrides = json.dumps({"trainer": {"cuda_device": -1}})
+overrides = json.dumps({"trainer": {"cuda_device": 0}})
 
 with tempfile.TemporaryDirectory() as serialization_dir:
 
